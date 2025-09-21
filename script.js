@@ -19,32 +19,52 @@ function getHumanChoice() {
   return choice.toLowerCase(); 
 }
 
-function playRound(humanChoice, computerChoice) {
-  const h = humanChoice.toLowerCase();
-  const c = computerChoice;
 
-  if (h === c) {
-    console.log(`It's a tie! You both chose ${h}.`);
-    return "tie";
+function playGame() {
+  let humanScore = 0;
+  let computerScore = 0;
+
+  function playRound(humanChoice, computerChoice) {
+    const h = humanChoice.toLowerCase();
+    const c = computerChoice;
+
+    if (h === c) {
+      console.log(`It's a tie! You both chose ${h}.`);
+      return "tie";
+    }
+
+    const humanWins =
+      (h === "rock" && c === "scissors") ||
+      (h === "paper" && c === "rock") ||
+      (h === "scissors" && c === "paper");
+
+    if (humanWins) {
+      humanScore++;
+      console.log(`You win! ${h} beats ${c}.`);
+      return "human";
+    } else {
+      computerScore++;
+      console.log(`You lose! ${c} beats ${h}.`);
+      return "computer";
+    }
   }
 
-  const humanWins =
-    (h === "rock" && c === "scissors") ||
-    (h === "paper" && c === "rock") ||
-    (h === "scissors" && c === "paper");
+  for (let i = 1; i <= 5; i++) {
+    console.log(`--- Round ${i} ---`);
+    const humanSelection = getHumanChoice();
+    const computerSelection = getComputerChoice();
+    playRound(humanSelection, computerSelection);
+    console.log(`Score after Round ${i}: Human ${humanScore} - Computer ${computerScore}`);
+  }
 
-  if (humanWins) {
-    humanScore++;
-    console.log(`You win! ${h} beats ${c}.`);
-    return "human";
+  console.log("=== Final Result ===");
+  if (humanScore > computerScore) {
+    console.log(`🎉 You won! Final score: ${humanScore}–${computerScore}`);
+  } else if (computerScore > humanScore) {
+    console.log(`💻 Computer won! Final score: ${computerScore}–${humanScore}`);
   } else {
-    computerScore++;
-    console.log(`You lose! ${c} beats ${h}.`);
-    return "computer";
+    console.log(`🤝 It's a tie! Final score: ${humanScore}–${computerScore}`);
   }
 }
 
-const humanSelection = getHumanChoice();
-const computerSelection = getComputerChoice();
-playRound(humanSelection, computerSelection);
-console.log(`Score: Human ${humanScore} - Computer ${computerScore}`);
+playGame();
